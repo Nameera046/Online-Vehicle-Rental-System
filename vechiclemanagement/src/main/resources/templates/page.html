@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EliteWheels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            background: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 25px;
+            height: 3px;
+            background-color: #0d0d0d;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 6px 10px;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        nav a:hover {
+            color: #5d9cec;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .dropdown-parent {
+            position: relative;
+        }
+
+        .dropdown-parent:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            color: #333;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            top: 100%;
+            left: 0;
+            border-radius: 4px;
+            z-index: 999;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f0f0f0;
+            color: #5d9cec;
+        }
+
+        /* Sidebar */
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: left 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        #sidebar-toggle:checked ~ .sidebar {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            margin: 0;
+            color: #4a00e0;
+        }
+
+        .close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .rental-banner {
+            background: #eef3ff;
+            margin: 15px 20px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #4a00e0;
+            font-size: 16px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .dropdown-toggle:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+            margin-left: 10px;
+        }
+
+        .dropdown-toggle:hover + .dropdown-container,
+        .dropdown-container:hover {
+            display: flex;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .dropdown-container a:hover {
+            background: #f0f0f0;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 90vh;
+            background-image: url('https://img.freepik.com/free-photo/luxurious-car-parked-highway-with-illuminated-headlight-sunset_181624-60607.jpg?semt=ais_hybrid&w=740');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .promo-text {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .promo-sub {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tabs button {
+            padding: 10px 20px;
+            border: none;
+            border-bottom: 3px solid transparent;
+            background: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .tabs button:hover {
+            border-color: #00bfff;
+        }
+
+        /* Features Section */
+        .features-section {
+            background-color: #f9f9f9;
+            padding: 50px 20px;
+        }
+
+        .features-section h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: #222;
+        }
+
+        .feature-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: #fff;
+            width: 260px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            display: block;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #1a1a4b;
+        }
+
+        .card-content p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            background-color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .reviews-section h2 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .review-card {
+            flex: 1 1 300px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            max-width: 350px;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .review-info {
+            margin-left: 10px;
+            text-align: left;
+        }
+
+        .review-info div:first-child {
+            font-weight: bold;
+        }
+
+        .review-info div:last-child {
+            font-size: 13px;
+            color: gray;
+        }
+
+        .review-rating {
+            color: #f5b50a;
+        }
+
+        .review-text {
+            text-align: left;
+        }
+
+        /* Under 25 Promo */
+        .under-25-promo {
+            background: linear-gradient(to right, #7cd3f7, #1f88e5);
+            color: #fff;
+            padding: 30px 20px;
+            margin-top: 60px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .under-25-promo h3 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .under-25-promo p {
+            margin: 5px 0 0;
+            font-size: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1 1 150px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h2,
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-section p {
+            margin-bottom: 10px;
+        }
+
+        .social-icons a img {
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+    <header>
+        <div class="menu-logo">
+            <label for="sidebar-toggle" class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <div class="logo">EliteWheels</div>
+        </div>
+
+        <nav>
+            <a href="#">Home</a>
+            <div class="dropdown-parent">
+                <a href="#">Vehicle ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a href="carform.html">Car</a></li>
+                    <li><a href="vanform.html">Van</a></li>
+                    <li><a href="busform.html">Bus</a></li>
+                </ul>
+            </div>
+            <a href="help.html">Help</a>
+            <a href="service.html">Service</a>
+            <a href="signin.html">Signup</a>
+            <div class="dropdown-parent">
+                <a href="#">Login ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a href="customerlogin.html">Customer</a></li>
+                    <li><a href="adminlogin.html">Admin</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <label for="sidebar-toggle" class="close-btn">×</label>
+        </div>
+        <div class="rental-banner">Rental 1 to 100 days</div>
+        <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+        <div class="dropdown-toggle">
+            <span><i class="fa fa-user"></i> Login</span>
+            <i class="fa fa-chevron-down"></i>
+        </div>
+        <div class="dropdown-container">
+            <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+            <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>
+        </div>
+        <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+        <div class="dropdown-toggle">
+            <span><i class="fa fa-car"></i> Vehicle</span>
+            <i class="fa fa-chevron-down"></i>
+        </div>
+        <div class="dropdown-container">
+            <a href="carform.html"><i class="fa fa-car-side"></i> Car</a>
+            <a href="vanform.html"><i class="fa fa-shuttle-van"></i> Van</a>
+            <a href="busform.html"><i class="fa fa-bus"></i> Bus</a>
+        </div>
+        <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+        <a class="menu-item" href="service.html"><i class="fa fa-cogs"></i> Services</a>
+        <div class="premium-box">
+            <p>Customer login</p>
+            <button>Log in</button>
+        </div>
+        <a class="menu-item" href="help.html"><i class="fa fa-question-circle"></i> OK Help</a>
+        <a class="menu-item" href="contact.html"><i class="fa fa-envelope"></i> Contact Us</a>
+        <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="overlay">
+            <div class="promo-text">Elite Wheels!</div>
+            <div class="promo-sub">With great offers</div>
+            <div class="tabs">
+                <button>CARS</button>
+                <button>VANS</button>
+                <button>Buses</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <h2>Car rental deals and featured services</h2>
+        <div class="feature-cards">
+            <div class="card">
+                <img src="https://www.shutterstock.com/shutterstock/photos/2357846379/display_1500/stock-vector-early-bird-offer-vector-icon-isolated-on-white-background-special-early-bird-discount-business-2357846379.jpg" alt="Early Bird Discount">
+                <div class="card-content">
+                    <h3>Don't Wait - Save When You Book Early!</h3>
+                    <p>Take a break and get ahead of the rush! Book early and save 15% on your next trip. More planning, more relaxing, more saving!</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://thumbs.dreamstime.com/b/bold-red-promotional-banner-weekend-super-sale-festive-discount-offer-342358681.jpg" alt="Weekend & Festival Specials">
+                <div class="card-content">
+                    <h3>CLUB OK: Best price on bookings</h3>
+                    <p>Make the most of your weekends and festive breaks! Enjoy special deals like 3 days for the price of 2 and festive discounts up to 20% off. Your perfect getaway starts here!</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://t3.ftcdn.net/jpg/02/77/69/26/360_F_277692680_b65wdSQDuWZRrKwIUmGQo0zwND6n0MZR.jpg" alt="First-Time User Discount">
+                <div class="card-content">
+                    <h3>Your First Ride Just Got Better!</h3>
+                    <p>Welcome to the ride of your life! Get ₹500 off your first booking with code WELCOME500. Your adventure starts now!</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://cdn.prod.website-files.com/65284b5cb29ee8599d31cfe7/65284b5cb29ee8599d31e4ce_020823.1.jpg" alt="Loyalty Rewards Program">
+                <div class="card-content">
+                    <h3>Loyal Customers!</h3>
+                    <p>Every trip gets you closer to your next discount! Earn points with every booking and redeem them for exclusive savings. Loyalty pays off—literally!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vehicle Categories Section -->
+    <section class="features-section" style="background-color: #fff;">
+        <h2>Choose Your Wheels, Own the Road!</h2>
+        <div class="feature-cards">
+            <div class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgCyYE92YcBlOtH_ue-4P5Dux1K_Jc4COaP59EdPdJL87ukC9McCJjP3Q&s" alt="Car">
+                <div class="card-content">
+                    <a href="carform.html"><h3>Cars</h3></a>
+                    <p>Perfect for city drives, quick getaways, and solo adventures. Easy, comfy, and fuel-efficient!</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://etimg.etb2bimg.com/photo/68842665.cms" alt="Van">
+                <div class="card-content">
+                    <a href="vanform.html"><h3>Vans</h3></a>
+                    <p>More space, more comfort. Ideal for families, groups, or extra luggage on long trips.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://www.volvobuses.com/content/dam/volvo-buses/markets/global/classic/news/2020/1860x1050-9400-Intercity-coach-BS4-2020.jpg" alt="Bus">
+                <div class="card-content">
+                    <a href="busform.html"><h3>Buses</h3></a>
+                    <p>Big group? No problem! Travel together with room for everyone and everything.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destination Section -->
+    <section class="features-section" style="background-color: #f9f9f955;">
+        <h2>Our most popular destinations</h2>
+        <div class="feature-cards">
+            <div class="card">
+                <img src="https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/thiruvalluvar-statue-kanyakumari-1655196623_b2c20ff64e13e74324d6.webp" alt="Kaniya Kumari">
+                <div class="card-content">
+                    <h3>Kaniya Kumari</h3>
+                    <p>The southern tip of India, is where three oceans meet. Famous for its stunning sunrises, sunsets, and serene vibes.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://miro.medium.com/v2/resize:fit:1000/1*e6m1k3IRLNC3nqdnBTRdiw.jpeg" alt="Madurai">
+                <div class="card-content">
+                    <h3>Madurai</h3>
+                    <p>Home to the magnificent Meenakshi Amman Temple, one of India’s architectural marvels.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://s3.india.com/wp-content/uploads/2024/07/Historical-Places-To-Visit-In-Ooty.jpg?impolicy=Medium_Widthonly&w=350&h=263" alt="Ooty">
+                <div class="card-content">
+                    <h3>Ooty</h3>
+                    <p>The Queen of Hill Stations with tea gardens, lakes, and colonial charm.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://media.assettype.com/outlooktraveller/import/outlooktraveller/public/uploads/articles/explore/Shore_Temple_Mahabalipuram_.jpg?w=1200&h=675&auto=format%2Ccompress&fit=max&enlarge=true" alt="Mahabalipuram">
+                <div class="card-content">
+                    <h3>Mahabalipuram</h3>
+                    <p>Coastal UNESCO site known for its ancient rock-cut temples, intricate carvings, and serene beachside charm.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section">
+        <h2>Review</h2>
+        <div style="color: #555; margin-bottom: 40px;">
+            <span style="font-size: 20px; color: #f5b50a;">★★★★ </span>
+            <span style="margin-left: 10px; font-size: 16px;">4.0 rating of 5000 reviews</span>
+        </div>
+        <div class="feature-cards">
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar" style="background-color: #f26522;">R</div>
+                    <div class="review-info">
+                        <div>Ravi S. – Chennai</div>
+                        <div>18 hours ago</div>
+                    </div>
+                    <img src="https://yt3.googleusercontent.com/2eI1TjX447QZFDe6R32K0V2mjbVMKT5mIfQR-wK5bAsxttS_7qzUDS1ojoSKeSP0NuWd6sl7qQ=s900-c-k-c0x00ffffff-no-rj" style="height: 20px; margin-left: auto;" alt="Google">
+                </div>
+                <div class="review-rating">★★★★★</div>
+                <p class="review-text">Smooth booking experience and clean cars! Picked up my rental in under 10 minutes. Will definitely book again!</p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar" style="background-color: #4285f4;">S</div>
+                    <div class="review-info">
+                        <div>Priya M. – Coimbatore</div>
+                        <div>a day ago</div>
+                    </div>
+                    <img src="https://yt3.googleusercontent.com/2eI1TjX447QZFDe6R32K0V2mjbVMKT5mIfQR-wK5bAsxttS_7qzUDS1ojoSKeSP0NuWd6sl7qQ=s900-c-k-c0x00ffffff-no-rj" style="height: 20px; margin-left: auto;" alt="Google">
+                </div>
+                <div class="review-rating">★★★★★</div>
+                <p class="review-text">Booked a van for a family trip—super spacious and well-maintained. The weekend deal made it even better!</p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar" style="background-color: #673ab7;">S</div>
+                    <div class="review-info">
+                        <div>Meena R. – Madurai</div>
+                        <div>a day ago</div>
+                    </div>
+                    <img src="https://yt3.googleusercontent.com/2eI1TjX447QZFDe6R32K0V2mjbVMKT5mIfQR-wK5bAsxttS_7qzUDS1ojoSKeSP0NuWd6sl7qQ=s900-c-k-c0x00ffffff-no-rj" style="height: 20px; margin-left: auto;" alt="Google">
+                </div>
+                <div class="review-rating">★★★★★</div>
+                <p class="review-text">The customer support team was very helpful. They answered all my questions before booking. Loved the early bird discount!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Under 25 Promo -->
+    <section class="under-25-promo">
+        <h3>Are you <strong>under 25?</strong></h3>
+        <p>We have the <strong>PERFECT CAR</strong> for you</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h2>About Us</h2>
+                <p>Your trusted vehicle rental partner offering cars, vans, and buses for every occasion. Drive with comfort and convenience.</p>
+            </div>
+            <div class="footer-section">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Vehicles</a></li>
+                    <li><a href="#">Booking</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h2>Contact Us</h2>
+                <p>Email: info@vehiclerental.com</p>
+                <p>Phone: +1 234 567 8900</p>
+                <p>Location: 123 Main Street, Cityville</p>
+            </div>
+            <div class="footer-section">
+                <h2>Follow Us</h2>
+                <div class="social-icons">
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                    <a href="#"><img src="https://uttrakhandcoldandcuttings.co.in/images/Instagram-Log-in.jpg" alt="Instagram"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Vehicle Rental Co. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

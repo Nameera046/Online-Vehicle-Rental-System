@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - EliteWheels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            background: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-icon span {
+            width: 25px;
+            height: 3px;
+            background-color: #0d0d0d;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        nav {
+            background: #fff;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #5d9cec;
+        }
+
+        .dropdown-parent {
+            position: relative;
+        }
+
+        .dropdown-parent:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+            min-width: 180px;
+            z-index: 1000;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #f0f0f0;
+            color: #5d9cec;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            margin: 0;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .rental-banner {
+            background: #f1f8ff;
+            margin: 15px 20px;
+            padding: 12px;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #4a00e0;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .menu-item, .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover, .dropdown-toggle:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .dropdown-container a:hover {
+            background: #f0f0f0;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        .hero {
+            position: relative;
+            height: 60vh;
+            background-image: url('https://img.freepik.com/free-photo/luxurious-car-parked-highway-with-illuminated-headlight-sunset_181624-60607.jpg?t=st=1745597962~exp=1745601562~hmac=e33723a4dd259c59e1741bc48b4cc7c22cfcaec866e58b6bdfb9a2370d84b22a&w=1380');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .promo-text {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .promo-sub {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .services-section {
+            background-color: #f9f9f9;
+            padding: 50px 20px;
+        }
+
+        .services-section h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .services-section p {
+            text-align: center;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #1a1a4b;
+        }
+
+        .card-content p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .card-content ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card-content ul li:before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: #5d9cec;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 20px;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        footer .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+        }
+
+        footer .footer-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        footer .footer-section p,
+        footer .footer-section a {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+            text-decoration: none;
+        }
+
+        footer .footer-section a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        footer .social-icons a img {
+            width: 20px;
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        footer .social-icons a:hover img {
+            transform: scale(1.2);
+        }
+
+        footer .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="menu-logo">
+            <div class="menu-icon" id="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo">EliteWheels</div>
+        </div>
+        <nav>
+            <a href="page.html">Home</a>
+            <div class="dropdown-parent">
+                <a href="#">Vehicle ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a href="carform.html">Car</a></li>
+                    <li><a href="vanform.html">Van</a></li>
+                    <li><a href="busform.html">Bus</a></li>
+                </ul>
+            </div>
+            <a href="service.html">Services</a>
+            <a href="help.html">Help</a>
+            <a href="signin.html">Signup</a>
+            <div class="dropdown-parent">
+                <a href="#">Login ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a href="customerlogin.html">Customer</a></li>
+                    <li><a href="adminlogin.html">Admin</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <div class="rental-banner">Rental 1 to 100 days</div>
+        <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+        <div class="menu-item dropdown-toggle">
+            <span><i class="fa fa-user"></i> Login</span>
+            <i class="fa fa-chevron-down arrow-icon"></i>
+        </div>
+        <div class="dropdown-container">
+            <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+            <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>
+        </div>
+        <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+        <div class="menu-item dropdown-toggle">
+            <span><i class="fa fa-car"></i> Vehicle</span>
+            <i class="fa fa-chevron-down arrow-icon"></i>
+        </div>
+        <div class="dropdown-container">
+            <a href="carform.html"><i class="fa fa-car-side"></i> Car</a>
+            <a href="vanform.html"><i class="fa fa-shuttle-van"></i> Van</a>
+            <a href="busform.html"><i class="fa fa-bus"></i> Bus</a>
+        </div>
+        <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+        <a class="menu-item"><i class="fa fa-cogs"></i> Services</a>
+        <div class="premium-box">
+            <p>Customer login</p>
+            <a href="customerlogin.html"><button>Log in</button></a>
+        </div>
+        <a class="menu-item"><i class="fa fa-question-circle"></i> OK Help</a>
+        <a class="menu-item"><i class="fa fa-envelope"></i> Contact Us</a>
+        <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="overlay">
+            <div class="promo-text">Our Services</div>
+            <div class="promo-sub">Tailored Solutions for Every Journey</div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+        <h2>Explore Our Premium Services</h2>
+        <p>At EliteWheels, we offer a range of services designed to make your travel seamless, comfortable, and tailored to your needs. Discover how we can enhance your journey!</p>
+        <div class="service-cards">
+            <div class="card">
+                <img src="https://th.bing.com/th/id/OIP.MnBDOkj7Df4rUg-3-Um1mAHaE8?w=768&h=512&rs=1&pid=ImgDetMain" alt="City Ride">
+                <div class="card-content">
+                    <h3>City Ride Solutions</h3>
+                    <p>Navigate urban streets with ease using our compact and stylish cars, perfect for city adventures.</p>
+                    <ul>
+                        <li>Wide range of compact cars</li>
+                        <li>Easy parking and maneuverability</li>
+                        <li>24/7 roadside assistance</li>
+                        <li>Flexible hourly and daily rentals</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Long-Distance Travel">
+                <div class="card-content">
+                    <h3>Long-Distance Travel</h3>
+                    <p>Travel far and wide with our fuel-efficient vehicles, designed for comfort on extended journeys.</p>
+                    <ul>
+                        <li>Fuel-efficient cars and vans</li>
+                        <li>Comfortable seating for long drives</li>
+                        <li>Unlimited mileage options</li>
+                        <li>GPS navigation included</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://th.bing.com/th/id/OIP.5zrrCU-u_OIi0h8VKM8j8AHaE8?rs=1&pid=ImgDetMain" alt="Group Travel">
+                <div class="card-content">
+                    <h3>Group Travel Solutions</h3>
+                    <p>Travel together with our spacious buses, perfect for group outings, events, or family trips.</p>
+                    <ul>
+                        <li>Spacious buses for large groups</li>
+                        <li>Comfortable seating and storage</li>
+                        <li>Professional drivers available</li>
+                        <li>Customizable rental durations</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://th.bing.com/th/id/OIP.4xFS7Kx8WxjapawsulVcuwHaEA?rs=1&pid=ImgDetMain" alt="Luxury Rentals">
+                <div class="card-content">
+                    <h3>Luxury Vehicle Rentals</h3>
+                    <p>Experience the journey in style with our premium luxury vehicles for special occasions.</p>
+                    <ul>
+                        <li>High-end cars with premium features</li>
+                        <li>Perfect for weddings and events</li>
+                        <li>Chauffeur services available</li>
+                        <li>Exclusive rental packages</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Corporate Rentals">
+                <div class="card-content">
+                    <h3>Corporate Rentals</h3>
+                    <p>Professional travel solutions for businesses, with reliable vehicles and flexible plans.</p>
+                    <ul>
+                        <li>Corporate accounts with priority booking</li>
+                        <li>Fleet of professional-grade vehicles</li>
+                        <li>Custom billing and reporting</li>
+                        <li>Dedicated support team</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://th.bing.com/th/id/OIP.F_rrZNR5ZHe9GF0UHIOWGwHaEK?rs=1&pid=ImgDetMain" alt="Airport Transfers">
+                <div class="card-content">
+                    <h3>Airport Transfer Services</h3>
+                    <p>Start or end your journey stress-free with our reliable airport transfer services.</p>
+                    <ul>
+                        <li>Timely pick-up and drop-off</li>
+                        <li>Comfortable vehicles for all group sizes</li>
+                        <li>Flight tracking for schedule adjustments</li>
+                        <li>Meet-and-greet service available</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h2>About Us</h2>
+                <p>Your trusted vehicle rental partner offering cars, vans, and buses for every occasion. Drive with comfort and convenience.</p>
+            </div>
+            <div class="footer-section">
+                <h2>Quick Links</h2>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;"><a href="#">Home</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#">Vehicles</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#">Booking</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h2>Contact Us</h2>
+                <p>Email: info@elitewheels.com</p>
+                <p>Phone: +1 234 567 8900</p>
+                <p>Location: 123 Main Street, Cityville</p>
+            </div>
+            <div class="footer-section">
+                <h2>Follow Us</h2>
+                <div class="social-icons">
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+                    <a href="#"><img src="https://uttrakhandcoldandcuttings.co.in/images/Instagram-Log-in.jpg" alt="Instagram"></a>
+                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 EliteWheels. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        const menuIcon = document.getElementById('menu-icon');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+        const dropdownToggles = document.querySelectorAll('.menu-item.dropdown-toggle');
+        const dropdownParents = document.querySelectorAll('.dropdown-parent');
+
+        // Toggle sidebar
+        if (menuIcon) {
+            menuIcon.addEventListener('click', () => {
+                sidebar.classList.add('active');
+            });
+        }
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+
+        // Toggle dropdowns in sidebar
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const dropdown = toggle.nextElementSibling;
+                const arrow = toggle.querySelector('.arrow-icon');
+
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                    toggle.classList.remove('dropdown-active');
+                    arrow.style.transform = 'rotate(0deg)';
+                } else {
+                    dropdown.style.display = 'block';
+                    toggle.classList.add('dropdown-active');
+                    arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Dropdown menu hover for nav
+        dropdownParents.forEach(parent => {
+            parent.addEventListener('mouseenter', () => {
+                parent.querySelector('.dropdown-menu').style.display = 'block';
+            });
+            parent.addEventListener('mouseleave', () => {
+                parent.querySelector('.dropdown-menu').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

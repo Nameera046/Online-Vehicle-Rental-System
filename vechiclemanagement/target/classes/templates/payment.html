@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment | EliteWheels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+        min-height: 100vh;
+        background-image: url('https://t4.ftcdn.net/jpg/02/52/15/95/360_F_252159531_5hyXvKjfN406Oj3HT3G6ADrWmUxOeBLZ.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a i {
+            margin-right: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #5d9cec;
+        }
+
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        .rental-link {
+            display: inline-block;
+            background-color: #f1f4ff;
+            color: #5f00d0;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .rental-link:hover {
+            background-color: #dcdfff;
+            color: #3a00a3;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .payment-section {
+            padding: 40px;
+            background: white;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-section h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #000000;
+        }
+
+        .welcome-message {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .payment-details {
+            margin-bottom: 20px;
+        }
+
+        .payment-details p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .payment-details .total {
+            font-weight: bold;
+            color: #0066ff;
+        }
+
+        .confirm-button {
+            padding: 10px 20px;
+            background-color: #0066ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .confirm-button:hover {
+            background-color: #0051cc;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-section {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+
+    <header>
+        <div class="logo">
+            <label for="sidebar-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <span>EliteWheels</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="page.html"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="account.html"><i class="fa fa-user"></i> Account</a></li>
+                <li><a href="logout.html"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <div class="premium-box">
+            <p><a href="#" class="rental-link">Rental 1 to 100 days</a></p>
+        </div>
+        <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-car"></i> Vehicle</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="category1.html"><i class="fa fa-car"></i> Car</a>
+            <a href="category2.html"><i class="fa fa-car"></i> Bus</a>
+            <a href="category3.html"><i class="fa fa-car"></i> Van</a>
+        </div>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-user"></i> Login</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+            <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>
+            <a href="premimumlogin.html"><i class="fa fa-star"></i> Premium</a>
+        </div>
+        <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+        <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-tags"></i> Offers</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="Early Bird Offer.html"><i class="fa fa-gift"></i> Early Bird Offer</a>
+            <a href="weekend Offer.html"><i class="fa fa-calendar-week"></i>Weekend Offer</a>
+            <a href="First Ride Offer.html"><i class="fa fa-star"></i>First Ride Offer</a>
+            <a href="Loyal Customers.html"><i class="fa fa-leaf"></i> Loyal Customers</a>
+        </div>
+        <a class="menu-item"><i class="fa fa-cogs"></i> Services</a>
+        <div class="premium-box">
+            <p>Premium</p>
+            <button>Log in</button>
+        </div>
+        <a class="menu-item"><i class="fa fa-question-circle"></i>OK Help</a>
+        <a class="menu-item"><i class="fa fa-envelope"></i> Contact Us</a>
+        <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+    <div class="main-content">
+        <div class="payment-section">
+            <h2>Rental Details</h2>
+            <div class="welcome-message">Booking for: <span id="user-email"></span></div>
+            <div class="payment-details">
+                <p><strong>Vehicle:</strong> <span id="vehicle-name">N/A</span></p>
+                <p><strong>Pick-up Location:</strong> <span id="pickup"></span></p>
+                <p><strong>Drop-off Location:</strong> <span id="dropoff"></span></p>
+                <p><strong>Pick-up Date:</strong> <span id="pickup-date"></span></p>
+                <p><strong>Drop-off Date:</strong> <span id="dropoff-date"></span></p>
+                <p><strong>Rental Duration:</strong> <span id="duration"></span> hours</p>
+                <p><strong>Cost per Hour:</strong> ₹<span id="cost-per-hour"></span></p>
+                <p class="total"><strong>Total Cost:</strong> ₹<span id="total-cost"></span></p>
+            </div>
+            <a id="confirm-button" class="confirm-button" href="confirmation.html">Confirm</a>
+        </div>
+    </div>
+
+<script>
+    const menuIcon = document.querySelector('.menu-icon');
+    const sidebar = document.getElementById('sidebar');
+    const closeBtn = document.getElementById('close-btn');
+    const dropdownToggle = document.querySelectorAll('.dropdown-toggle');
+    const dropdownContainer = document.querySelectorAll('.dropdown-container');
+    const confirmButton = document.getElementById('confirm-button');
+
+    if (menuIcon) {
+        menuIcon.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+    }
+
+    dropdownToggle.forEach((toggle, index) => {
+        toggle.addEventListener('click', function () {
+            dropdownContainer[index].style.display =
+                dropdownContainer[index].style.display === 'flex' ? 'none' : 'flex';
+            this.classList.toggle('dropdown-active');
+        });
+    });
+
+    async function loadPaymentDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = decodeURIComponent(urlParams.get('email') || 'N/A');
+        const vehicleName = decodeURIComponent(urlParams.get('vehicleName') || 'N/A');
+        const pickup = decodeURIComponent(urlParams.get('pickup') || 'N/A');
+        const dropoff = decodeURIComponent(urlParams.get('dropoff') || 'N/A');
+        const pickupDate = decodeURIComponent(urlParams.get('pickup-date') || '');
+        const dropoffDate = decodeURIComponent(urlParams.get('dropoff-date') || '');
+        const bookingId = localStorage.getItem('bookingId');
+
+        console.log('URL Parameters:', urlParams.toString());
+        console.log('Email:', email);
+        console.log('Vehicle Name:', vehicleName);
+        console.log('Pickup:', pickup);
+        console.log('Dropoff:', dropoff);
+        console.log('Pickup Date (raw):', pickupDate);
+        console.log('Dropoff Date (raw):', dropoffDate);
+        console.log('Booking ID:', bookingId);
+
+        document.getElementById('user-email').textContent = email;
+        document.getElementById('vehicle-name').textContent = vehicleName;
+        document.getElementById('pickup').textContent = pickup;
+        document.getElementById('dropoff').textContent = dropoff;
+        document.getElementById('pickup-date').textContent = pickupDate || 'N/A';
+        document.getElementById('dropoff-date').textContent = dropoffDate || 'N/A';
+
+        let costPerHour = 5; // Default fallback
+        try {
+            const response = await fetch(`http://localhost:8080/api/vehicles/by-name/${encodeURIComponent(vehicleName)}`);
+            if (response.ok) {
+                const vehicle = await response.json();
+                costPerHour = vehicle.pricePerHour || costPerHour;
+                console.log('Fetched Vehicle:', vehicle);
+                console.log('Price per Hour from DB:', costPerHour);
+            } else {
+                console.error('Failed to fetch vehicle:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching vehicle cost:', error);
+        }
+
+        document.getElementById('cost-per-hour').textContent = costPerHour;
+        console.log('Cost per Hour (displayed):', costPerHour);
+
+        let hours = 0;
+        let totalCost = 0;
+        if (pickupDate && dropoffDate) {
+            const parseDate = (dateStr) => {
+                const [datePart, timePart] = dateStr.split('T');
+                if (!datePart || !timePart) {
+                    console.error('Invalid date format:', dateStr);
+                    return null;
+                }
+                const [year, month, day] = datePart.split('-').map(Number);
+                const [hour, minute] = timePart.split(':').map(Number);
+                return new Date(year, month - 1, day, hour, minute, 0);
+            };
+
+            const start = parseDate(pickupDate);
+            const end = parseDate(dropoffDate);
+
+            console.log('Parsed Start Date:', start);
+            console.log('Parsed End Date:', end);
+
+            if (start && end && !isNaN(start.getTime()) && !isNaN(end.getTime()) && start < end) {
+                hours = Math.ceil((end - start) / (1000 * 60 * 60)); // Calculate hours
+                totalCost = hours * costPerHour;
+
+                console.log('Calculated Hours:', hours);
+                console.log('Total Cost:', totalCost);
+            } else {
+                console.error('Invalid date values or pickup date is not before dropoff date');
+                console.log('Start Valid:', start && !isNaN(start.getTime()));
+                console.log('End Valid:', end && !isNaN(end.getTime()));
+                console.log('Start < End:', start < end);
+            }
+        } else {
+            console.error('Pickup or Dropoff date missing');
+        }
+
+        const durationElement = document.getElementById('duration');
+        const totalCostElement = document.getElementById('total-cost');
+
+        durationElement.textContent = hours || 'N/A';
+        totalCostElement.textContent = totalCost ? totalCost: 'N/A';
+
+        console.log('Displayed Duration:', durationElement.textContent);
+        console.log('Displayed Total Cost:', totalCostElement.textContent);
+
+        confirmButton.href = `confirmation.html?email=${encodeURIComponent(email)}&vehicleName=${encodeURIComponent(vehicleName)}&pickup=${encodeURIComponent(pickup)}&dropoff=${encodeURIComponent(dropoff)}&pickup-date=${encodeURIComponent(pickupDate)}&dropoff-date=${encodeURIComponent(dropoffDate)}&duration=${hours || 'N/A'}&total-cost=${totalCost ? totalCost: 'N/A'}&bookingId=${bookingId || ''}`;
+        console.log('Confirm Button URL:', confirmButton.href);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            alert('Please log in to view payment details.');
+            window.location.href = 'customerlogin.html';
+            return;
+        }
+        loadPaymentDetails();
+    });
+</script>
+</body>
+</html>

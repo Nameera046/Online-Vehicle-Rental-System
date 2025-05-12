@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+        min-height: 100vh;
+        background-image: url('https://t4.ftcdn.net/jpg/02/52/15/95/360_F_252159531_5hyXvKjfN406Oj3HT3G6ADrWmUxOeBLZ.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: #5d9cec;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            z-index: 1000;
+            width: max-content;
+        }
+
+        nav ul li:last-child .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f2f2f2;
+        }
+
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        .rental-link {
+            display: inline-block;
+            background-color: #f1f4ff;
+            color: #5f00d0;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .rental-link:hover {
+            background-color: #dcdfff;
+            color: #3a00a3;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .form-section {
+            padding: 40px;
+            background:  #c4bfbf;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-section label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        .form-section input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-section input[readonly] {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .form-section button {
+            padding: 10px 20px;
+            background-color: #0066ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .form-section button:hover {
+            background-color: #0051cc;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+
+            .dropdown-menu {
+                min-width: 250px;
+                left: 0;
+                top: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dropdown-menu {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+
+    <header>
+        <div class="logo">
+            <label for="sidebar-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <span>EliteWheels</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="page.html">Home</a></li>
+                <li class="dropdown"><a href="#">Vehicles ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Car.html">Car</a></li>
+                        <li><a href="Bus.html">Bus</a></li>
+                        <li><a href="Van.html">Van</a></li>
+                    </ul>
+                </li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="service.html">Service</a></li>
+                <li><a href="signin.html">Signin</a></li>
+                <li class="dropdown"><a href="#">Login ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="customerlogin.html">Customer</a></li>
+                        <li><a href="adminlogin.html">Admin</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <div class="premium-box">
+            <p><a href="#" class="rental-link">Rental 1 to 100 days</a></p>
+        </div>
+        <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-car"></i> Vehicle</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="category1.html"><i class="fa fa-car"></i> Car</a>
+            <a href="category2.html"><i class="fa fa-car"></i> Bus</a>
+            <a href="category3.html"><i class="fa fa-car"></i> Van</a>
+        </div>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-user"></i> Login</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+            <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>
+        </div>
+        <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+        <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+        <a class="menu-item" href="service.html"><i class="fa fa-cogs"></i> Services</a>
+        <div class="premium-box">
+            <p>Customer login</p>
+            <a href="customerlogin.html"><button>Log in</button></a>
+        </div>
+        <a class="menu-item" href="help.html"><i class="fa fa-question-circle"></i>OK Help</a>
+        <a class="menu-item" href="contact.html"><i class="fa fa-envelope"></i> Contact Us</a>
+        <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+    <div class="main-content">
+        <div class="form-section">
+            <h2>Book a Vehicle</h2>
+            <div>
+                <label for="vehicle-id">Vehicle ID:</label>
+                <input type="text" id="vehicle-id" name="vehicle-id" readonly>
+
+                <label for="vehicle-name">Vehicle Name:</label>
+                <input type="text" id="vehicle-name" name="vehicle-name" readonly>
+
+                <label for="vehicle-type">Vehicle Type:</label>
+                <input type="text" id="vehicle-type" name="vehicle-type" readonly>
+
+                <label for="pickup">Pick-up Location:</label>
+                <input type="text" id="pickup" name="pickup" required>
+
+                <label for="dropoff">Drop-off Location:</label>
+                <input type="text" id="dropoff" name="dropoff" required>
+
+                <label for="pickup-date">Pick-up Date:</label>
+                <input type="datetime-local" id="pickup-date" name="pickup-date" required>
+
+                <label for="dropoff-date">Drop-off Date:</label>
+                <input type="datetime-local" id="dropoff-date" name="dropoff-date" required>
+
+                <button onclick="submitBooking()">Book Now</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const closeBtn = document.getElementById('close-btn');
+    const dropdownToggle = document.querySelectorAll('.dropdown-toggle');
+    const dropdownContainer = document.querySelectorAll('.dropdown-container');
+
+    sidebarToggle.addEventListener('change', function () {
+        sidebar.style.left = this.checked ? '0' : '-280px';
+    });
+
+    closeBtn.addEventListener('click', function () {
+        sidebarToggle.checked = false;
+        sidebar.style.left = '-280px';
+    });
+
+    dropdownToggle.forEach((toggle, index) => {
+        toggle.addEventListener('click', function () {
+            dropdownContainer[index].style.display =
+                dropdownContainer[index].style.display === 'flex' ? 'none' : 'flex';
+            this.classList.toggle('dropdown-active');
+        });
+    });
+
+    async function loadVehicleDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const vehicleName = decodeURIComponent(urlParams.get('vehicleName'));
+
+        if (!vehicleName) {
+            alert('No vehicle name provided.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/vehicles/by-name/${encodeURIComponent(vehicleName)}`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch vehicle details: ${response.statusText}`);
+            }
+            const vehicle = await response.json();
+
+            document.getElementById('vehicle-id').value = vehicle.id;
+            document.getElementById('vehicle-name').value = vehicle.name;
+            document.getElementById('vehicle-type').value = vehicle.type;
+        } catch (error) {
+            console.error('Error fetching vehicle:', error);
+            alert('Failed to load vehicle details: ' + error.message);
+        }
+    }
+
+    async function fetchUserIdByEmail(email) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/auth/user-by-email/${encodeURIComponent(email)}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch user ID');
+            }
+            const userData = await response.json();
+            return userData.userId;
+        } catch (error) {
+            console.error('Error fetching user ID:', error);
+            throw error;
+        }
+    }
+
+    async function submitBooking() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = decodeURIComponent(urlParams.get('email') || localStorage.getItem('email') || '');
+        const vehicleName = document.getElementById('vehicle-name').value;
+        const vehicleId = document.getElementById('vehicle-id').value;
+        const vehicleType = document.getElementById('vehicle-type').value;
+        const pickupLocation = document.getElementById('pickup').value;
+        const dropoffLocation = document.getElementById('dropoff').value;
+        const pickupDateRaw = document.getElementById('pickup-date').value;
+        const dropoffDateRaw = document.getElementById('dropoff-date').value;
+
+        // Validate inputs
+        if (!email) {
+            console.log('Missing email:', email);
+            alert('User email not found. Please log in again.');
+            window.location.href = 'customerlogin.html';
+            return;
+        }
+
+        // Fetch userId using email
+        let userId;
+        try {
+            userId = await fetchUserIdByEmail(email);
+            console.log('Fetched userId:', userId);
+        } catch (error) {
+            alert('Unable to retrieve user ID. Please log in again.');
+            window.location.href = 'customerlogin.html';
+            return;
+        }
+
+        if (!vehicleId || !vehicleName || !vehicleType || !pickupLocation || !dropoffLocation || !pickupDateRaw || !dropoffDateRaw) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        // Validate dates
+        const pickupDate = new Date(pickupDateRaw);
+        const dropoffDate = new Date(dropoffDateRaw);
+        const now = new Date();
+        if (pickupDate >= dropoffDate) {
+            alert('Pickup date must be before dropoff date.');
+            return;
+        }
+        if (pickupDate < now) {
+            alert('Pickup date cannot be in the past.');
+            return;
+        }
+
+        const bookingDate = new Date();
+
+        // Prepare booking data
+        const bookingData = {
+            userId: parseInt(userId),
+            vehicleId: parseInt(vehicleId),
+            vehicleName: vehicleName,
+            vehicleType: vehicleType,
+            pickupLocation: pickupLocation,
+            dropoffLocation: dropoffLocation,
+            pickupDate: pickupDate.toISOString(),
+            dropoffDate: dropoffDate.toISOString(),
+            bookingDate: bookingDate.toISOString(),
+            status: "CONFIRMED"
+        };
+
+        console.log('Booking Data:', bookingData);
+
+        try {
+            const response = await fetch('http://localhost:8080/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData)
+            });
+
+            const responseText = await response.text();
+            console.log('Response Status:', response.status);
+            console.log('Response Text:', responseText);
+
+            if (!response.ok) {
+                throw new Error(responseText || 'Failed to create booking.');
+            }
+
+            // Navigate to payment.html with email and vehicleName
+            const redirectUrl = `payment.html?email=${encodeURIComponent(email)}&vehicleName=${encodeURIComponent(vehicleName)}&pickup=${encodeURIComponent(pickupLocation)}&dropoff=${encodeURIComponent(dropoffLocation)}&pickup-date=${encodeURIComponent(pickupDateRaw)}&dropoff-date=${encodeURIComponent(dropoffDateRaw)}`;
+            window.location.href = redirectUrl;
+
+        } catch (error) {
+            console.error('Booking submission failed:', error);
+            alert('Booking failed: ' + error.message);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = decodeURIComponent(urlParams.get('email') || localStorage.getItem('email') || '');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        console.log('isLoggedIn:', isLoggedIn);
+        console.log('email:', email);
+
+        if (isLoggedIn !== "true" || !email) {
+            console.log('Redirecting to login: isLoggedIn=', isLoggedIn, 'email=', email);
+            alert("Please log in to book a vehicle.");
+            window.location.href = "customerlogin.html";
+        } else {
+            loadVehicleDetails();
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard | EliteWheels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+        min-height: 100vh;
+        background-image: url('https://t4.ftcdn.net/jpg/02/52/15/95/360_F_252159531_5hyXvKjfN406Oj3HT3G6ADrWmUxOeBLZ.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a i {
+            margin-right: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #5d9cec;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            z-index: 1000;
+            width: max-content;
+        }
+
+        nav ul li:last-child .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f2f2f2;
+        }
+
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        .rental-link {
+            display: inline-block;
+            background-color: #f1f4ff;
+            color: #5f00d0;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .rental-link:hover {
+            background-color: #dcdfff;
+            color: #3a00a3;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 80px auto 20px;
+            padding: 20px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #131517;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .admin-controls {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .add-vehicle-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .add-vehicle-btn:hover {
+            background-color: #218838;
+        }
+
+        .categories-section {
+            margin-bottom: 40px;
+        }
+
+        .category-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .category-card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 15px;
+            flex: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .category-description {
+            font-size: 14px;
+            color: #666666;
+            line-height: 1.4;
+        }
+
+        .vehicles-section {
+            display: none;
+        }
+
+        .vehicles-section.active {
+            display: block;
+        }
+
+        .vehicles-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .vehicle-card {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .vehicle-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        .vehicle-image {
+            width: 240px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-right: 25px;
+        }
+
+        .vehicle-info {
+            flex: 1;
+        }
+
+        .vehicle-name {
+            font-size: 24px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .vehicle-details {
+            font-size: 16px;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+
+        .cost-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .original-price {
+            font-size: 16px;
+            text-decoration: line-through;
+            color: #999999;
+        }
+
+        .discount {
+            font-size: 16px;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 4px 8px;
+            border-radius: 5px;
+        }
+
+        .final-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #007bff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #dc3545;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+
+            .dropdown-menu {
+                min-width: 250px;
+                left: 0;
+                top: 100%;
+            }
+
+            .category-grid {
+                flex-direction: column;
+            }
+
+            .category-card {
+                width: 100%;
+            }
+
+            .vehicle-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .vehicle-image {
+                width: 100%;
+                height: 180px;
+                margin-bottom: 15px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .edit-btn, .delete-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dropdown-menu {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+
+    <header>
+        <div class="logo">
+            <label for="sidebar-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <span>EliteWheels Admin</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboardadmin.html"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="manage_vehicles.html"><i class="fa fa-car"></i> Vehicles</a></li>
+                <li><a href="page.html"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <a class="menu-item" href="admin_dashboard.html"><i class="fa fa-building"></i> Dashboard</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-car"></i> Manage Vehicles</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="add_car.html"><i class="fa fa-car"></i> Add Car</a>
+            <a href="add_van.html"><i class="fa fa-shuttle-van"></i> Add Van</a>
+            <a href="add_bus.html"><i class="fa fa-bus"></i> Add Bus</a>
+        </div>
+        <a class="menu-item" href="manage_bookings.html"><i class="fa fa-book"></i> Bookings</a>
+        <a class="menu-item" href="manage_users.html"><i class="fa fa-users"></i> Users</a>
+        <a class="menu-item" href="logout.html"><i class="fa fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="container">
+        <h1 class="dashboard-title">Admin Dashboard - Vehicle Management</h1>
+        <div class="admin-controls">
+            <a href="addnewvehicle.html">
+                <button class="add-vehicle-btn">Add New Vehicle</button>
+            </a>
+            <a href="bookedvehicle.html">
+                <button class="add-vehicle-btn">Booked Vehicles</button>
+            </a>
+        </div>
+
+        <div class="categories-section">
+            <div class="category-grid">
+                <div class="category-card" data-category="car">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0zWR04viQP_MEI8TUqnMx49WBt9xnrkUKb5mofSZD-BihEUwCyursLBFAZygoFRo8ABM&usqp=CAU" alt="Car" class="category-image">
+                    <div class="category-title">Cars</div>
+                    <div class="category-description">
+                        Manage compact and luxury cars for city drives and solo adventures.
+                    </div>
+                </div>
+                <div class="category-card" data-category="van">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxD74bcislxVPO3EFxJ_fYrQ5hPgzcgEcXXw&s" alt="Van" class="category-image">
+                    <div class="category-title">Vans</div>
+                    <div class="category-description">
+                        Administer spacious vans for families and group travel.
+                    </div>
+                </div>
+                <div class="category-card" data-category="bus">
+                    <img src="https://content.presspage.com/uploads/2341/8669b48f-c9eb-478a-88e1-b804c2344e70/1920_p-bus-eot-automation-kooperation-mobileye.jpg?10000" alt="Bus" class="category-image">
+                    <div class="category-title">Buses</div>
+                    <div class="category-description">
+                        Oversee large buses for group tours and events.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="vehicles-section" id="car-vehicles">
+            <h2 class="vehicles-title">Available Cars</h2>
+            <div class="vehicle-list" id="car-vehicle-list">
+                <!-- Cars will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="vehicles-section" id="van-vehicles">
+            <h2 class="vehicles-title">Available Vans</h2>
+            <div class="vehicle-list" id="van-vehicle-list">
+                <!-- Vans will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <div class="vehicles-section" id="bus-vehicles">
+            <h2 class="vehicles-title">Available Buses</h2>
+            <div class="vehicle-list" id="bus-vehicle-list">
+                <!-- Buses will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownContainer = document.querySelector('.dropdown-container');
+        const categoryCards = document.querySelectorAll('.category-card');
+        const vehicleSections = document.querySelectorAll('.vehicles-section');
+        const carVehicleList = document.getElementById('car-vehicle-list');
+        const vanVehicleList = document.getElementById('van-vehicle-list');
+        const busVehicleList = document.getElementById('bus-vehicle-list');
+
+        sidebarToggle.addEventListener('change', () => {
+            if (sidebarToggle.checked) {
+                sidebar.style.left = '0';
+            } else {
+                sidebar.style.left = '-280px';
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebarToggle.checked = false;
+            sidebar.style.left = '-280px';
+        });
+
+        dropdownToggle.addEventListener('click', () => {
+            dropdownContainer.style.display = dropdownContainer.style.display === 'flex' ? 'none' : 'flex';
+            dropdownToggle.classList.toggle('dropdown-active');
+        });
+
+        categoryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const category = card.getAttribute('data-category');
+                vehicleSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(`${category}-vehicles`).classList.add('active');
+            });
+        });
+
+        // Generic function to fetch and display vehicles
+        async function loadVehicles(category, vehicleListElement) {
+            vehicleListElement.innerHTML = ''; // Clear any existing content
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/vehicles/${category}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    },
+                    cache: 'no-store'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const vehicles = await response.json();
+                console.log(`${category} API Response:`, vehicles); // Debugging
+
+                if (vehicles.length === 0) {
+                    vehicleListElement.innerHTML = `<p>No ${category.toLowerCase()}s available at the moment.</p>`;
+                    return;
+                }
+
+                vehicles.forEach(vehicle => {
+                    const vehicleCard = document.createElement('div');
+                    vehicleCard.className = 'vehicle-card';
+                    vehicleCard.innerHTML = `
+                        <img src="${vehicle.imageUrl}" alt="${vehicle.name}" class="vehicle-image">
+                        <div class="vehicle-info">
+                            <div class="vehicle-name">${vehicle.name}</div>
+                            <div class="vehicle-details">${category}, ${vehicle.seats} Seats, ${vehicle.ac || 'Automatic'}</div>
+                            <div class="cost-section">
+                                <span class="final-price">₹${vehicle.pricePerHour}/hr</span>
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </div>
+                    `;
+                    vehicleListElement.appendChild(vehicleCard);
+                });
+            } catch (error) {
+                console.error(`Error fetching ${category} vehicles:`, error);
+                vehicleListElement.innerHTML = `<p>Error loading ${category.toLowerCase()}s. Please try again later.</p>`;
+            }
+        }
+
+        // Load vehicles for each category when the page loads
+        window.addEventListener('load', () => {
+            loadVehicles('Car', carVehicleList);
+            loadVehicles('Van', vanVehicleList);
+            loadVehicles('Bus', busVehicleList);
+        });
+    </script>
+</body>
+</html>

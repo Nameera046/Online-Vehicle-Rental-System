@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Vehicle - EliteWheels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-image: url('https://t4.ftcdn.net/jpg/02/52/15/95/360_F_252159531_5hyXvKjfN406Oj3HT3G6ADrWmUxOeBLZ.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a i {
+            margin-right: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #5d9cec;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            z-index: 1000;
+            width: max-content;
+        }
+
+        nav ul li:last-child .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f2f2f2;
+        }
+
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        #sidebar-toggle:checked ~ .sidebar {
+            left: 0;
+        }
+
+        #sidebar-toggle:checked ~ header .menu-icon {
+            color: #5d9cec;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-toggle:hover + .dropdown-container,
+        .dropdown-container:hover {
+            display: flex;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .main-content {
+            margin-left: 20px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #c4bfbf;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+
+            .dropdown-menu {
+                min-width: 250px;
+                left: 0;
+                top: 100%;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dropdown-menu {
+                min-width: 200px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+
+    <header>
+        <div class="logo">
+            <label for="sidebar-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <span>EliteWheels Admin</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="page.html"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="dashboardadmin.html"><i class="fa fa-car"></i> Dashboard</a></li>
+                <li><a href="page.html"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <a class="menu-item" href="dashboardadmin.html"><i class="fa fa-building"></i> Dashboard</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-car"></i> Manage Vehicles</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="addnewvehicle.html"><i class="fa fa-car"></i> Add New Vehicle</a>
+            <a href="manage_vehicles.html"><i class="fa fa-shuttle-van"></i> Manage Vehicles</a>
+        </div>
+        <a class="menu-item" href="manage_bookings.html"><i class="fa fa-book"></i> Bookings</a>
+        <a class="menu-item" href="manage_users.html"><i class="fa fa-users"></i> Users</a>
+        <a class="menu-item" href="logout.html"><i class="fa fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <h2>Add New Vehicle</h2>
+            <form id="vehicle-form">
+                <div class="form-group">
+                    <label for="type">Vehicle Type</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="Bus">Bus</option>
+                        <option value="Car">Car</option>
+                        <option value="Van">Van</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Vehicle Name</label>
+                    <input type="text" id="name" name="name" placeholder="Swift Dzire" required>
+                </div>
+                <div class="form-group">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="text" id="imageUrl" name="imageUrl" placeholder="http://example.com/image.jpg" required>
+                </div>
+                <div class="form-group">
+                    <label for="pricePerHour">Price per Hour</label>
+                    <input type="text" id="pricePerHour" name="pricePerHour" placeholder="1300/hr" required>
+                </div>
+                <div class="form-group">
+                    <label for="seats">Seats</label>
+                    <input type="number" id="seats" name="seats" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="bags">Bags</label>
+                    <input type="number" id="bags" name="bags" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="doors">Doors</label>
+                    <input type="number" id="doors" name="doors" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="ac">A/C or NON A/C</label>
+                    <select id="ac" name="ac" required>
+                        <option value="" disabled selected>A/C</option>
+                        <option value="A/C">A/C</option>
+                        <option value="Non A/C">Non A/C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="costDetails">Cost Details</label>
+                    <input type="text" id="costDetails" name="costDetails" placeholder="Free cost rental" required>
+                </div>
+                <div class="form-group">
+                    <label for="cancellationPolicy">Cancellation Policy</label>
+                    <input type="text" id="cancellationPolicy" name="cancellationPolicy" placeholder="Free cancellation" required>
+                </div>
+                <div class="form-group">
+                    <label for="onlineCheckin">Online Check-in</label>
+                    <input type="text" id="onlineCheckin" name="onlineCheckin" placeholder="Online check-in available" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="available" name="available">
+                        Available
+                    </label>
+                </div>
+                <button type="submit">Add Vehicle</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle Functionality
+        document.getElementById('close-btn').addEventListener('click', () => {
+            document.getElementById('sidebar-toggle').checked = false;
+        });
+
+        document.querySelector('.dropdown-toggle').addEventListener('click', function() {
+            this.classList.toggle('dropdown-active');
+            const dropdown = this.nextElementSibling;
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Form Submission
+        document.getElementById("vehicle-form").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            // Collect form data
+            const type = document.getElementById("type").value;
+            const name = document.getElementById("name").value.trim();
+            const imageUrl = document.getElementById("imageUrl").value.trim();
+            const pricePerHour = document.getElementById("pricePerHour").value.trim();
+            const seats = parseInt(document.getElementById("seats").value);
+            const bags = parseInt(document.getElementById("bags").value);
+            const doors = parseInt(document.getElementById("doors").value);
+            const ac = document.getElementById("ac").value;
+            const costDetails = document.getElementById("costDetails").value.trim();
+            const cancellationPolicy = document.getElementById("cancellationPolicy").value.trim();
+            const onlineCheckin = document.getElementById("onlineCheckin").value.trim();
+            const available = document.getElementById("available").checked;
+
+            // Basic validation
+            if (!type) {
+                alert("Please select a vehicle type.");
+                return;
+            }
+            if (!name) {
+                alert("Please enter a vehicle name.");
+                return;
+            }
+            if (!imageUrl || !/^https?:\/\/[^\s$.?#].[^\s]*$/.test(imageUrl)) {
+                alert("Please enter a valid image URL.");
+                return;
+            }
+            if (!pricePerHour || isNaN(parseFloat(pricePerHour.replace(/[^0-9.]/g, '')))) {
+                alert("Please enter a valid price per hour.");
+                return;
+            }
+            if (isNaN(seats) || seats < 1) {
+                alert("Please enter a valid number of seats (minimum 1).");
+                return;
+            }
+            if (isNaN(bags) || bags < 0) {
+                alert("Please enter a valid number of bags (minimum 0).");
+                return;
+            }
+            if (isNaN(doors) || doors < 1) {
+                alert("Please enter a valid number of doors (minimum 1).");
+                return;
+            }
+
+            const formData = {
+                type,
+                name,
+                imageUrl,
+                pricePerHour,
+                seats,
+                bags,
+                doors,
+                ac,
+                costDetails,
+                cancellationPolicy,
+                onlineCheckin,
+                available
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/api/vehicles', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+                }
+
+                await response.json();
+                alert('Vehicle added successfully!');
+                document.getElementById("vehicle-form").reset();
+                //window.location.href = "addnew.html"; // Redirect to carform.html
+            } catch (error) {
+                let errorMessage = "Error adding vehicle: ";
+                if (error.message.includes("Failed to fetch")) {
+                    errorMessage += "Unable to connect to the server. Please ensure the server is running at http://localhost:8080 and CORS is properly configured.";
+                } else {
+                    errorMessage += error.message;
+                }
+                alert(errorMessage);
+                console.error('Error during fetch:', error);
+            }
+        });
+    </script>
+</body>
+</html>

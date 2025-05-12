@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login | EliteWheels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background-image: url('https://t4.ftcdn.net/jpg/02/52/15/95/360_F_252159531_5hyXvKjfN406Oj3HT3G6ADrWmUxOeBLZ.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+    }
+
+    .menu-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .menu-icon span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #333;
+      margin: 3px 0;
+      border-radius: 2px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: 500;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #eef3ff;
+      border-radius: 4px;
+      color: #5d9cec;
+    }
+
+    .dropdown-parent {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      color: #333;
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      top: 100%;
+      left: 0;
+      border-radius: 4px;
+      z-index: 999;
+    }
+
+    .dropdown-parent:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu li {
+      list-style: none;
+    }
+
+    .dropdown-menu li a {
+      display: block;
+      padding: 10px 15px;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .dropdown-menu li a:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      height: 100vh;
+      width: 280px;
+      background-color: #ffffff;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+      position: fixed;
+      top: 0;
+      left: -280px;
+      transition: 0.5s;
+      padding-top: 20px;
+      z-index: 1001;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-header h1 {
+      font-size: 30px;
+      margin: 0;
+      color: #4a00e0;
+    }
+
+    .sidebar-header h1 span {
+      color: #add8e6;
+    }
+
+    #close-btn {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .rental-banner {
+      background: #f1f8ff;
+      margin: 15px 20px;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #4a00e0;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      letter-spacing: 0.5px;
+    }
+
+    .menu-item, .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      font-size: 16px;
+      color: #333;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .menu-item i {
+      margin-right: 15px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .menu-item:hover, .dropdown-toggle:hover {
+      background: #f0f0f0;
+    }
+
+    .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .arrow-icon {
+      margin-left: auto;
+      transition: transform 0.3s;
+    }
+
+    .dropdown-active .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-container {
+      display: none;
+      flex-direction: column;
+    }
+
+    .dropdown-container a {
+      display: flex;
+      align-items: center;
+      padding: 10px 50px;
+      font-size: 15px;
+      color: #555;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .dropdown-container a:hover {
+      background: #f0f0f0;
+    }
+
+    .premium-box {
+      background: #f1f8ff;
+      margin: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .premium-box p {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #4a00e0;
+    }
+
+    .premium-box button {
+      padding: 8px 20px;
+      border: 1px solid #0056d2;
+      border-radius: 8px;
+      background: transparent;
+      color: #0056d2;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .premium-box button:hover {
+      background: #0056d2;
+      color: white;
+    }
+
+    /* Admin Login Form */
+    .container {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .login-container {
+      background: #c4bfbf;
+      padding: 35px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-group input:focus {
+      border-color: #5d9cec;
+      outline: none;
+      box-shadow: 0 0 6px rgba(93, 156, 236, 0.5);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: #5d9cec;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .login-btn:hover {
+      background: transparent;
+      border: 2px solid #5d9cec;
+      color: #5d9cec;
+    }
+
+    .bottom-text {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .bottom-text a {
+      color: #5d9cec;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .bottom-text a:hover {
+      text-decoration: underline;
+    }
+    .social-login {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .social-login p {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .social-buttons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background-color: #f0f0f0;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
+
+    .social-buttons a:hover {
+      background-color: #ddd;
+    }
+
+    .social-buttons img {
+      width: 24px;
+      height: 24px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <h1>E/<span>W</span></h1>
+    <span id="close-btn">×</span>
+  </div>
+
+  <div class="rental-banner">
+    Rental 1 to 100 days
+  </div>
+
+  <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+
+  <div class="menu-item dropdown-toggle">
+    <span><i class="fa fa-user"></i> Login</span>
+    <i class="fa fa-chevron-down arrow-icon"></i>
+  </div>
+  <div class="dropdown-container">
+    <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+    <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>
+  </div>
+
+  <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+
+  <div class="menu-item dropdown-toggle">
+    <span><i class="fa fa-car"></i> Vehicle</span>
+    <i class="fa fa-chevron-down arrow-icon"></i>
+  </div>
+  <div class="dropdown-container">
+    <a href="carform.html"><i class="fa fa-car-side"></i> Car</a>
+    <a href="vanform.html"><i class="fa fa-shuttle-van"></i> Van</a>
+    <a href="busform.html"><i class="fa fa-bus"></i> Bus</a>
+  </div>
+
+  <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+
+  <!--<div class="menu-item dropdown-toggle">
+    <span><i class="fa fa-tags"></i> Offers</span>
+    <i class="fa fa-chevron-down arrow-icon"></i>
+  </div>
+  <div class="dropdown-container">
+    <a href="#"><i class="fa fa-percent"></i> Seasonal Offers</a>
+    <a href="#"><i class="fa fa-star"></i> Member Discounts</a>
+    <a href="#"><i class="fa fa-clock"></i> Last Minute Deals</a>
+    <a href="#"><i class="fa fa-gift"></i> Referral Bonuses</a>
+  </div>-->
+
+  <a class="menu-item"><i class="fa fa-cogs"></i> Services</a>
+
+  <div class="premium-box">
+    <p>Customer login</p>
+    <a href="customerlogin.html"><button>Log in</button></a>
+</div>
+
+  <a class="menu-item"><i class="fa fa-question-circle"></i> OK Help</a>
+  <a class="menu-item"><i class="fa fa-envelope"></i> Contact Us</a>
+  <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="menu-logo">
+    <div class="menu-icon" id="menu-icon">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="logo">EliteWheels</div>
+  </div>
+  <nav>
+    <a href="page.html">Home</a>
+    <div class="dropdown-parent">
+      <a href="#">Vehicle ▼</a>
+      <ul class="dropdown-menu">
+        <li><a href="carform.html">Car</a></li>
+        <li><a href="vanform.html">Van</a></li>
+        <li><a href="busform.html">Bus</a></li>
+      </ul>
+    </div>
+    <!--<div class="dropdown-parent">
+      <a href="#">Offers ▼</a>
+      <ul class="dropdown-menu">
+        <li><a href="#">Summer Drive Sale - 30% Off</a></li>
+        <li><a href="#">Van Deals - Rent 2, Get 1 Free</a></li>
+        <li><a href="#">Group Bus Saver - Up to 40%</a></li>
+        <li><a href="#">Premium Members Double Rewards</a></li>
+      </ul>
+    </div>-->
+    <a href="#">Help</a>
+    <a href="signin.html">Service</a>
+    <a href="signin.html">Signup</a>
+    <div class="dropdown-parent">
+      <a href="#">Login ▼</a>
+      <ul class="dropdown-menu">
+        <li><a href="customerlogin.html">Customer</a></li>
+        <li><a href="adminlogin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- Admin Login Form -->
+<div class="container">
+  <div class="login-container">
+    <h2>Admin Login</h2>
+    <form id="admin-login-form">
+      <div class="form-group">
+        <input type="email" id="admin-email" placeholder="Email" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="admin-password" placeholder="Password" required>
+      </div>
+      <p id="admin-error-msg" style="color: red; margin-top: 5px;"></p>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+    <div class="social-login">
+      <p>Or Continue With</p>
+      <div class="social-buttons">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2702/2702602.png" alt="Google"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+      </div>
+    </div>
+
+    <div class="bottom-text">
+      Not an admin? <a href="page.html">Go back</a>
+    </div>
+  </div>
+</div>
+<script>
+  const menuIcon = document.getElementById('menu-icon');
+  const sidebar = document.getElementById('sidebar');
+  const closeBtn = document.getElementById('close-btn');
+  const dropdownToggles = document.querySelectorAll('.menu-item.dropdown-toggle');
+
+  // Toggle sidebar
+  if (menuIcon) {
+    menuIcon.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+  }
+
+  closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+  });
+
+  // Toggle dropdowns
+  dropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const dropdown = toggle.nextElementSibling;
+      const arrow = toggle.querySelector('.arrow-icon');
+
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        toggle.classList.remove('dropdown-active');
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        dropdown.style.display = 'block';
+        toggle.classList.add('dropdown-active');
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    });
+  });
+</script>
+<script>
+  document.getElementById("admin-login-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById("admin-email").value;
+    const password = document.getElementById("admin-password").value;
+    const errorMsg = document.getElementById("admin-error-msg");
+
+    fetch("http://localhost:8080/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Invalid email or password");
+      return response.json();
+    })
+    .then(data => {
+      if (data.role === "ADMIN") {
+        localStorage.setItem("token", data.token);
+        window.location.href = "dashboardadmin.html";
+      } else {
+        errorMsg.textContent = "Access denied. Only admins can login here.";
+      }
+    })
+    .catch(error => {
+      errorMsg.textContent = "Invalid email or password";
+      console.error("Login error:", error);
+    });
+  });
+</script>
+</body>
+</html>

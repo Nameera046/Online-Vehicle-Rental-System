@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Booking Confirmation | EliteWheels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+        min-height: 100vh;
+        background-image: url('https://t4.ftcdn.net/jpg/02/52/15/95/360_F_252159531_5hyXvKjfN406Oj3HT3G6ADrWmUxOeBLZ.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        display: flex;
+        flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a i {
+            margin-right: 5px;
+        }
+
+        nav ul li a:hover {
+            color: #5d9cec;
+        }
+
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        .rental-link {
+            display: inline-block;
+            background-color: #f1f4ff;
+            color: #5f00d0;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .rental-link:hover {
+            background-color: #dcdfff;
+            color: #3a00a3;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirmation-section {
+            padding: 40px;
+            background: white;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .confirmation-section h2 {
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        .confirmation-section p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .total {
+            font-weight: bold;
+            color: #0066ff;
+        }
+
+        .ok-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0066ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .ok-button:hover {
+            background-color: #0051cc;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            nav ul li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .confirmation-section {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+
+    <header>
+        <div class="logo">
+            <label for="sidebar-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <span>EliteWheels</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="page.html"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="account.html"><i class="fa fa-user"></i> Account</a></li>
+                <li><a href="logout.html"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <div class="premium-box">
+            <p><a href="#" class="rental-link">Rental 1 to 100 days</a></p>
+        </div>
+        <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-car"></i> Vehicle</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="category1.html"><i class="fa fa-car"></i> Car</a>
+            <a href="category2.html"><i class="fa fa-car"></i> Bus</a>
+            <a href="category3.html"><i class="fa fa-car"></i> Van</a>
+        </div>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-user"></i> Login</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+            <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>
+            <a href="premimumlogin.html"><i class="fa fa-star"></i> Premium</a>
+        </div>
+        <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+        <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-tags"></i> Offers</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="Early Bird Offer.html"><i class="fa fa-gift"></i> Early Bird Offer</a>
+            <a href="weekend Offer.html"><i class="fa fa-calendar-week"></i>Weekend Offer</a>
+            <a href="First Ride Offer.html"><i class="fa fa-star"></i>First Ride Offer</a>
+            <a href="Loyal Customers.html"><i class="fa fa-leaf"></i> Loyal Customers</a>
+        </div>
+        <a class="menu-item"><i class="fa fa-cogs"></i> Services</a>
+        <div class="premium-box">
+            <p>Premium</p>
+            <button>Log in</button>
+        </div>
+        <a class="menu-item"><i class="fa fa-question-circle"></i>OK Help</a>
+        <a class="menu-item"><i class="fa fa-envelope"></i> Contact Us</a>
+        <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+    <div class="main-content">
+        <div class="confirmation-section">
+            <h2>Vehicle Rental Successful!</h2>
+            <p>Your vehicle rental has been successfully confirmed.</p>
+            <p><strong>User Email:</strong> <span id="user-email"></span></p>
+            <p><strong>Vehicle:</strong> <span id="vehicle-name"></span></p>
+            <p><strong>Pickup Location:</strong> <span id="pickup-location"></span></p>
+            <p><strong>Drop-off Location:</strong> <span id="dropoff-location"></span></p>
+            <p><strong>Pickup Date:</strong> <span id="pickup-date"></span></p>
+            <p><strong>Drop-off Date:</strong> <span id="dropoff-date"></span></p>
+            <p><strong>Rental Duration:</strong> <span id="duration"></span> hours</p>
+            <p class="total"><strong>Total Cost:</strong> ₹<span id="total-cost"></span></p>
+            <button class="ok-button" onclick="navigateToDashboard()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+        const dropdownToggle = document.querySelectorAll('.dropdown-toggle');
+        const dropdownContainer = document.querySelectorAll('.dropdown-container');
+
+        sidebarToggle.addEventListener('change', function () {
+            sidebar.style.left = this.checked ? '0' : '-280px';
+        });
+
+        closeBtn.addEventListener('click', function () {
+            sidebarToggle.checked = false;
+            sidebar.style.left = '-280px';
+        });
+
+        dropdownToggle.forEach((toggle, index) => {
+            toggle.addEventListener('click', function () {
+                dropdownContainer[index].style.display =
+                    dropdownContainer[index].style.display === 'flex' ? 'none' : 'flex';
+                this.classList.toggle('dropdown-active');
+            });
+        });
+
+        function loadBookingDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = decodeURIComponent(urlParams.get('email') || 'N/A');
+            const vehicleName = decodeURIComponent(urlParams.get('vehicleName') || 'N/A');
+            const pickup = decodeURIComponent(urlParams.get('pickup') || 'N/A');
+            const dropoff = decodeURIComponent(urlParams.get('dropoff') || 'N/A');
+            const pickupDate = decodeURIComponent(urlParams.get('pickup-date') || 'N/A');
+            const dropoffDate = decodeURIComponent(urlParams.get('dropoff-date') || 'N/A');
+            const duration = decodeURIComponent(urlParams.get('duration') || 'N/A');
+            const totalCost = decodeURIComponent(urlParams.get('total-cost') || 'N/A');
+
+            document.getElementById('user-email').textContent = email;
+            document.getElementById('vehicle-name').textContent = vehicleName;
+            document.getElementById('pickup-location').textContent = pickup;
+            document.getElementById('dropoff-location').textContent = dropoff;
+            document.getElementById('pickup-date').textContent = pickupDate;
+            document.getElementById('dropoff-date').textContent = dropoffDate;
+            document.getElementById('duration').textContent = duration;
+            document.getElementById('total-cost').textContent = totalCost;
+        }
+
+        function navigateToDashboard() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = encodeURIComponent(urlParams.get('email') || 'N/A');
+            window.location.href = 'dashboardcust.html';
+        }
+
+        window.addEventListener('load', loadBookingDetails);
+    </script>
+</body>
+</html>

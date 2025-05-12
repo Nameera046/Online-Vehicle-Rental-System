@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Car Booking | EliteWheels</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom right, #74ebd5, #ACB6E5);
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            position: relative;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: #5d9cec;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            z-index: 1000;
+            width: max-content;
+        }
+
+        nav ul li:last-child .dropdown-menu {
+            left: auto;
+            right: 0;
+        }
+
+        nav ul li:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #f2f2f2;
+        }
+
+        #sidebar-toggle {
+            display: none;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 280px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            transition: 0.5s;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 30px;
+            color: #4a00e0;
+        }
+
+        #close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-container {
+            display: none;
+            flex-direction: column;
+        }
+
+        .dropdown-container a {
+            display: flex;
+            align-items: center;
+            padding: 10px 50px;
+            font-size: 15px;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .premium-box {
+            background: #f1f8ff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .premium-box p {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a00e0;
+        }
+
+        .premium-box button {
+            padding: 8px 20px;
+            border: 1px solid #0056d2;
+            border-radius: 8px;
+            background: transparent;
+            color: #0056d2;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .premium-box button:hover {
+            background: #0056d2;
+            color: white;
+        }
+
+        .rental-link {
+            display: inline-block;
+            background-color: #f1f4ff;
+            color: #5f00d0;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .rental-link:hover {
+            background-color: #dcdfff;
+            color: #3a00a3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 20px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .booking-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .vehicles-section {
+            flex: 1;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-section {
+            width: 250px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .filter-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .filter-section details {
+            margin-bottom: 15px;
+        }
+
+        .filter-section summary {
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .filter-section ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .filter-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .filter-section ul li label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .search-bar select,
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .search-bar button {
+            padding: 8px 20px;
+            background: #ffaa00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .search-bar button:hover {
+            background: #e69b00;
+        }
+
+        .vehicles-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .vehicle-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .vehicle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vehicle-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .final-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .vehicle-image {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+        }
+
+        .vehicle-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .vehicle-details {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .vehicle-details span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vehicle-details i {
+            color: #666;
+        }
+
+        .vehicle-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .vehicle-features span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vehicle-features i {
+            color: #28a745;
+        }
+
+        .book-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ffaa00;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-transform: uppercase;
+            align-self: flex-end;
+        }
+
+        .book-btn:hover {
+            background-color: #e69b00;
+        }
+
+        .cost-details {
+            font-size: 12px;
+            color: #666;
+            align-self: flex-end;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .filter-section {
+                width: 100%;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar select,
+            .search-bar input,
+            .search-bar button {
+                width: 100%;
+            }
+
+            .vehicle-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .vehicle-image {
+                max-width: 100%;
+            }
+
+            .book-btn,
+            .cost-details {
+                align-self: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dropdown-menu {
+                min-width: 200px;
+            }
+
+            .vehicle-details,
+            .vehicle-features {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="sidebar-toggle">
+
+    <header>
+        <div class="logo">
+            <label for="sidebar-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <span>EliteWheels</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="page.html">Home</a></li>
+                <li class="dropdown"><a href="#">Vehicles ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Car.html">Car</a></li>
+                        <li><a href="Bus.html">Bus</a></li>
+                        <li><a href="Van.html">Van</a></li>
+                    </ul>
+                </li>
+                <!--<li class="dropdown"><a href="#">Offers ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Early Bird Offer.html">Early Bird Offer</a></li>
+                        <li><a href="weekend Offer.html">Weekend Offer</a></li>
+                        <li><a href="First Ride Offer.html">First Ride Offer</a></li>
+                        <li><a href="Loyal Customers.html">Loyal Customers</a></li>
+                    </ul>
+                </li>-->
+                <li><a href="#">Help</a></li>
+                <li><a href="signin.html">Signin</a></li>
+                <li class="dropdown"><a href="#">Login ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="customerlogin.html">Customer</a></li>
+                        <li><a href="adminlogin.html">Admin</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h1>E/<span style="color: lightblue;">W</span></h1>
+            <span id="close-btn">×</span>
+        </div>
+        <div class="premium-box">
+            <p><a href="#" class="rental-link">Rental 1 to 100 days</a></p>
+        </div>
+        <a class="menu-item" href="page.html"><i class="fa fa-building"></i> Home</a>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-car"></i> Vehicle</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="category1.html"><i class="fa fa-car"></i> Car</a>
+            <a href="category2.html"><i class="fa fa-car"></i> Bus</a>
+            <a href="category3.html"><i class="fa fa-car"></i> Van</a>
+        </div>
+        <div class="menu-item dropdown-toggle"><span><i class="fa fa-user"></i> Login</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="customerlogin.html"><i class="fa fa-user"></i> Customer</a>
+            <a href="adminlogin.html"><i class="fa fa-user-shield"></i> Admin</a>        </div>
+        <a class="menu-item" href="signin.html"><i class="fa fa-sign-in-alt"></i> Sign In</a>
+        <a class="menu-item"><i class="fa fa-map-marker-alt"></i> Locations</a>
+        <!--<div class="menu-item dropdown-toggle"><span><i class="fa fa-tags"></i> Offers</span><i class="fa fa-chevron-down arrow-icon"></i></div>
+        <div class="dropdown-container">
+            <a href="Early Bird Offer.html"><i class="fa fa-gift"></i> Early Bird Offer</a>
+            <a href="weekend Offer.html"><i class="fa fa-calendar-week"></i>Weekend Offer</a>
+            <a href="First Ride Offer.html"><i class="fa fa-star"></i>First Ride Offer</a>
+            <a href="Loyal Customers.html"><i class="fa fa-leaf"></i> Loyal Customers</a>
+        </div>-->
+        <a class="menu-item"><i class="fa fa-cogs"></i> Services</a>
+        <div class="premium-box">
+            <p>Customer login</p>
+            <a href="customerlogin.html"><button>Log in</button></a>
+        </div>
+        <a class="menu-item"><i class="fa fa-question-circle"></i>OK Help</a>
+        <a class="menu-item"><i class="fa fa-envelope"></i> Contact Us</a>
+        <a class="menu-item" href="page.html"><i class="fa fa-arrow-left"></i> Back to Home</a>
+    </div>
+
+    
+
+        <div class="vehicles-section">
+            <h1 class="booking-title">Car Booking</h1>
+            <h2 class="vehicles-title">Available Cars</h2>
+            <div class="vehicle-list" id="vehicle-list">
+                <!-- Vehicles will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+        const dropdownToggle = document.querySelectorAll('.dropdown-toggle');
+        const dropdownContainer = document.querySelectorAll('.dropdown-container');
+
+        sidebarToggle.addEventListener('change', function () {
+            sidebar.style.left = this.checked ? '0' : '-280px';
+        });
+
+        closeBtn.addEventListener('click', function () {
+            sidebarToggle.checked = false;
+            sidebar.style.left = '-280px';
+        });
+
+        dropdownToggle.forEach((toggle, index) => {
+            toggle.addEventListener('click', function () {
+                dropdownContainer[index].style.display =
+                    dropdownContainer[index].style.display === 'flex' ? 'none' : 'flex';
+                this.classList.toggle('dropdown-active');
+            });
+        });
+
+        // Fetch and display vehicles
+        async function loadVehicles() {
+            const vehicleList = document.getElementById('vehicle-list');
+            vehicleList.innerHTML = ''; // Clear any existing content
+
+            try {
+                const response = await fetch('http://localhost:8080/api/vehicles/Car', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const vehicles = await response.json();
+                if (vehicles.length === 0) {
+                    vehicleList.innerHTML = '<p>No cars available at the moment.</p>';
+                    return;
+                }
+
+                vehicles.forEach(vehicle => {
+                    const vehicleCard = document.createElement('div');
+                    vehicleCard.className = 'vehicle-card';
+                    vehicleCard.innerHTML = `
+                        <img src="${vehicle.imageUrl}" alt="${vehicle.name}" class="vehicle-image">
+                        <div class="vehicle-content">
+                            <div class="vehicle-header">
+                                <div class="vehicle-name">${vehicle.name}</div>
+                                <div class="final-price">₹${vehicle.pricePerHour}/hr</div>
+                            </div>
+                            <div class="vehicle-details">
+                                <span><i class="fas fa-users"></i> ${vehicle.seats} Seats</span>
+                                <span><i class="fas fa-suitcase"></i> ${vehicle.bags} Bags</span>
+                                <span><i class="fas fa-door-open"></i> ${vehicle.doors} Doors</span>
+                                <span><i class="fas fa-snowflake"></i> ${vehicle.ac}</span>
+                            </div>
+                            <div class="vehicle-features">
+                                <span><i class="fas fa-check"></i> Engine: Standard ${vehicle.name} Engine</span>
+                                <span><i class="fas fa-check"></i> ${vehicle.cancellationPolicy}</span>
+                                <span><i class="fas fa-check"></i> ${vehicle.onlineCheckin}</span>
+                            </div>
+                            <div class="cost-details">${vehicle.costDetails}</div>
+                            <a href="customerlogin.html" class="book-btn">Book Now</a>
+                        </div>
+                    `;
+                    vehicleList.appendChild(vehicleCard);
+                });
+            } catch (error) {
+                console.error('Error fetching vehicles:', error);
+                vehicleList.innerHTML = '<p>Error loading vehicles. Please try again later.</p>';
+            }
+        }
+
+        // Load vehicles when the page loads
+        window.addEventListener('load', loadVehicles);
+    </script>
+</body>
+</html>
